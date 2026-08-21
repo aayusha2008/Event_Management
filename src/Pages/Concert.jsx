@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Create from "./Create";
 
+// 15 default concert events
 const initialConcerts = [
   {
     id: 1,
@@ -124,20 +126,30 @@ const initialConcerts = [
   },
 ];
 
-function Concert({ setPage, onBuyTicket }) {
+function Concert() {
+
+  const navigate = useNavigate();
+
+  // Store events
   const [events, setEvents] = useState(initialConcerts);
+
+  // Controls Create popup
   const [showCreate, setShowCreate] = useState(false);
 
+  // Add newly created event to FRONT
   const handleCreateEvent = (newEvent) => {
+
     setEvents((previousEvents) => [
       newEvent,
       ...previousEvents,
     ]);
+
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
 
+      {/* Header */}
       <div className="bg-amber-500 text-white p-5 flex justify-between items-center">
 
         <h1 className="text-2xl font-bold">
@@ -146,6 +158,7 @@ function Concert({ setPage, onBuyTicket }) {
 
         <div className="flex gap-3">
 
+          {/* Create button */}
           <button
             onClick={() => setShowCreate(true)}
             className="bg-white text-amber-500 px-4 py-2 rounded-lg font-semibold"
@@ -153,67 +166,74 @@ function Concert({ setPage, onBuyTicket }) {
             Create Event
           </button>
 
+          {/* Home button */}
           <button
-            onClick={() => setPage("home")}
+            onClick={() => navigate("/home")}
             className="bg-white text-amber-500 px-4 py-2 rounded-lg font-semibold"
           >
-            Back
+            Home
           </button>
 
         </div>
 
       </div>
 
+      {/* Event cards */}
       <div className="max-w-6xl mx-auto p-6">
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-          {events.map((concert) => (
+          {events.map((event) => (
+
             <div
-              key={concert.id}
+              key={event.id}
               className="bg-white rounded-xl shadow-md p-5"
             >
 
               <h2 className="text-xl font-bold mb-3">
-                {concert.name}
+                {event.name}
               </h2>
 
               <p className="text-gray-600">
-                <strong>Date:</strong> {concert.date}
+                <strong>Date:</strong> {event.date}
               </p>
 
               <p className="text-gray-600">
-                <strong>Time:</strong> {concert.time}
+                <strong>Time:</strong> {event.time}
               </p>
 
               <p className="text-gray-600">
-                <strong>Location:</strong> {concert.location}
+                <strong>Location:</strong> {event.location}
               </p>
 
               <p className="text-gray-600 mb-4">
-                <strong>Price:</strong> Rs. {concert.price}
+                <strong>Price:</strong> Rs. {event.price}
               </p>
 
-              {concert.description && (
-                <p className="text-gray-500 mb-4">
-                  {concert.description}
-                </p>
-              )}
-
+              {/* Buy Ticket */}
               <button
-                onClick={() => onBuyTicket(concert.name)}
-                className="bg-amber-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-amber-600"
+                onClick={() =>
+                  navigate("/buy-ticket", {
+                    state: {
+                      eventName: event.name,
+                      price: event.price,
+                    },
+                  })
+                }
+                className="bg-amber-500 text-white px-5 py-2 rounded-lg font-semibold"
               >
                 Buy Ticket
               </button>
 
             </div>
+
           ))}
 
         </div>
 
       </div>
 
+      {/* Create popup */}
       {showCreate && (
         <Create
           onClose={() => setShowCreate(false)}

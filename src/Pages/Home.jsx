@@ -1,4 +1,8 @@
-function Home({ setPage }) {
+import { useNavigate } from "react-router-dom";
+
+function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gray-100">
 
@@ -11,21 +15,21 @@ function Home({ setPage }) {
       <div className="flex justify-center gap-6 mt-16">
 
         <button
-          onClick={() => setPage("concert")}
+          onClick={() => navigate("/concert")}
           className="bg-amber-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600"
         >
           Concert
         </button>
 
         <button
-          onClick={() => setPage("workshop")}
+          onClick={() => navigate("/workshop")}
           className="bg-amber-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600"
         >
           Workshop
         </button>
 
         <button
-          onClick={() => setPage("sports")}
+          onClick={() => navigate("/sports")}
           className="bg-amber-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600"
         >
           Sports
